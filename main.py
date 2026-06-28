@@ -7,19 +7,14 @@ app = FastAPI()
 POSTS_JSON = "https://whynotstudyf6.github.io/wfvh/index.json"
 IMAGES_JSON = "https://whynotstudyf6.github.io/images.json"
 
-@app.get("/api/posts")
+@app.get("/api/wfvh")
 def get_posts():
     return requests.get(POSTS_JSON).json()
 
-@app.get("/api/posts/random")
+@app.get("/api/wfvh/random")
 def get_random_post():
     data = requests.get(POSTS_JSON).json()
     return random.choice(data)
-
-@app.get("/api/posts/{category}")
-def get_category(category: str):
-    url = f"https://whynotstudyf6.github.io/wfvh/{category}/index.json"
-    return requests.get(url).json()
 
 @app.get("/api/images")
 def get_images():
