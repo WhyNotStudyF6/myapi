@@ -4,31 +4,26 @@ from fastapi import FastAPI
 
 app = FastAPI()
 
-BLOG_JSON = "https://whynotstudyf6.github.io/index.json"
+POSTS_JSON = "https://whynotstudyf6.github.io/wfvh/index.json"
 IMAGES_JSON = "https://whynotstudyf6.github.io/images.json"
 
 @app.get("/api/posts")
 def get_posts():
-    data = requests.get(BLOG_JSON).json()
-    return data
+    return requests.get(POSTS_JSON).json()
 
 @app.get("/api/posts/random")
 def get_random_post():
-    data = requests.get(BLOG_JSON).json()
+    data = requests.get(POSTS_JSON).json()
     return random.choice(data)
 
-@app.get("/api/posts/{title}")
-def get_post(title: str):
-    data = requests.get(BLOG_JSON).json()
-    for post in data:
-        if title in post["permalink"]:
-            return post
-    return {"error": "找不到文章"}
+@app.get("/api/posts/{category}")
+def get_category(category: str):
+    url = f"https://whynotstudyf6.github.io/wfvh/{category}/index.json"
+    return requests.get(url).json()
 
 @app.get("/api/images")
 def get_images():
-    data = requests.get(IMAGES_JSON).json()
-    return data
+    return requests.get(IMAGES_JSON).json()
 
 @app.get("/api/images/random")
 def get_random_image():
