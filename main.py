@@ -4,8 +4,8 @@ from fastapi import FastAPI
 
 app = FastAPI()
 
+IMGBB_API_KEY = "727af41d4805f56a09ea89ec070e9bd6"
 POSTS_JSON = "https://whynotstudyf6.github.io/wfvh/index.json"
-IMAGES_JSON = "https://whynotstudyf6.github.io/images.json"
 
 @app.get("/api/wfvh")
 def get_posts():
@@ -18,9 +18,11 @@ def get_random_post():
 
 @app.get("/api/images")
 def get_images():
-    return requests.get(IMAGES_JSON).json()
+    res = requests.get(f"https://api.imgbb.com/1/account/images?key={IMGBB_API_KEY}").json()
+    return [img["data"]["url"] for img in res["data"]]
 
 @app.get("/api/images/random")
 def get_random_image():
-    data = requests.get(IMAGES_JSON).json()
-    return {"url": "https://whynotstudyf6.github.io" + random.choice(data)}
+    res = requests.get(f"https://api.imgbb.com/1/account/images?key={IMGBB_API_KEY}").json()
+    images = [img["data"]["url"] for img in res["data"]]
+    return {"url": random.choice(images)}
